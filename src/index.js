@@ -12,8 +12,9 @@ const NoteApp = () => {
   // Do something when state/props chnage when no array provided
   // If empty array provided do something once
   // if array provided, then do something only if those props change
+
+  // CDM
   useEffect(() => {
-    console.log('cdm');
     const notesCached = getObject('notes');
 
     if (notesCached) {
@@ -21,8 +22,8 @@ const NoteApp = () => {
     }
   }, []);
 
+  // componentDidUpdate
   useEffect(() => {
-    console.log('notes Changed');
     setObject('notes', notes);
   }, [notes]);
 
@@ -53,13 +54,24 @@ const NoteApp = () => {
   );
 };
 
-const Note = ({ note, removeNote }) => (
-  <div>
-    <h3>{note.title}</h3>
-    <p>{note.body}</p>
-    <button onClick={() => (removeNote(note.title))}>x</button>
-  </div>
-);
+const Note = ({ note, removeNote }) => {
+  useEffect(() => {
+    console.log('Setup effect');
+
+    // componentDidUnmount
+    // clean up fucntion
+    return () => {
+      console.log('Cleaning up Note effect!');
+    };
+  }, []);
+  return (
+    <div>
+      <h3>{note.title}</h3>
+      <p>{note.body}</p>
+      <button onClick={() => (removeNote(note.title))}>x</button>
+    </div>
+  );
+};
 
 ReactDOM.render(<NoteApp />, document.getElementById('root'));
 

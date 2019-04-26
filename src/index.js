@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import { getObject, setObject } from './utils/localStorage';
 
+// state is notes
 const notesReducer = (state, action) => {
   switch(action.type) {
     case 'POPULATE_NOTES':

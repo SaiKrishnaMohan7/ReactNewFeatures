@@ -1,24 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import ReactDOM from 'react-dom';
 
 import * as serviceWorker from './serviceWorker';
 import { getObject, setObject } from './utils/localStorage';
 
+const notesReducer = (state, action) => {
+  switch(action.type) {
+    case 'POPULATE_NOTES':
+      return action.notes;
+
+    case 'ADD_NOTE':
+      return [...state, { title: action.title, body: action.body }];
+
+    case 'REMOVE_NOTE':
+      return state.filter(note => (note.title !== action.title));
+
+    default:
+      return state;
+  }
+};
+
 const NoteApp = () => {
-  const [notes, setNotes] = useState([]);
+  const [notes, dispatch] = useReducer(notesReducer, []);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-
-  // Do something when state/props chnage when no array provided
-  // If empty array provided do something once
-  // if array provided, then do something only if those props change
 
   // CDM
   useEffect(() => {
     const notesCached = getObject('notes');
 
     if (notesCached) {
-      setNotes(notesCached);
+      dispatch({type: 'POPULATE_NOTES', notes: notesCached})
     }
   }, []);
 
@@ -29,7 +41,8 @@ const NoteApp = () => {
 
   const addNote = (e) => {
     e.preventDefault();
-    setNotes([...notes, { title, body }]);
+
+    dispatch({type: 'ADD_NOTE', title, body});
 
     // reset the fields
     setTitle('');
@@ -37,7 +50,7 @@ const NoteApp = () => {
   };
 
   const removeNote = (title) => {
-    return setNotes(notes.filter((note) => (note.title !== title)));
+    dispatch({type: 'REMOVE_NOTE', title});
   };
 
   return (
@@ -64,6 +77,7 @@ const Note = ({ note, removeNote }) => {
       console.log('Cleaning up Note effect!');
     };
   }, []);
+
   return (
     <div>
       <h3>{note.title}</h3>

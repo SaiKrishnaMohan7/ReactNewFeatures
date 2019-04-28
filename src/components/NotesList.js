@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Note from './Note';
+import NotesContext from '../context/notesContext';
 
 // This component doesn't use removeNote and only passes it down
-const NotesList = ({ notes, removeNote }) => {
+const NotesList = () => {
+  const { notes } = useContext(NotesContext);
+
   return (
         notes.map((note) => (
-          <Note note={note} removeNote={removeNote} key={note.title}/>
+          <Note note={note} key={note.title}/>
         )
       )
     );

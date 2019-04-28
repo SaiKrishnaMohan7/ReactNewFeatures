@@ -1,10 +1,13 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
+
+import NotesContext from '../context/notesContext';
 
 // The NotesForm component needs to concern itslef with adding notes, keeping track of what's typed in titile and body
 // hence addNote, title, body and the useSate calls have been moved here
-const NotesForm = ({ dispatch }) => {
+const NotesForm = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const { dispatch } = useContext(NotesContext);
 
   const addNote = (e) => {
     e.preventDefault();

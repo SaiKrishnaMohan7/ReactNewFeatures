@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-const Note = ({ note, removeNote }) => {
+import NotesContext from '../context/notesContext';
+
+const Note = ({ note }) => {
+  const { dispatch } = useContext(NotesContext);
+
+  const removeNote = (title) => {
+    dispatch({type: 'REMOVE_NOTE', title});
+  };
 
   return (
     <div>
